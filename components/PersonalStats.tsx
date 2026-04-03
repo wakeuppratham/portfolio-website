@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Trophy, Code2, GraduationCap, Swords, BookOpen } from "lucide-react";
+import { Trophy, Code2, GraduationCap, Users, BookOpen } from "lucide-react";
 
 const stats = [
   {
@@ -26,10 +26,10 @@ const stats = [
     color: "hsl(var(--terminal-green))",
   },
   {
-    icon: Swords,
-    value: "Active",
-    label: "Competitive Programmer",
-    sub: "Codeforces · LeetCode · GFG",
+    icon: Users,
+    value: "Member",
+    label: "University Coding Academy",
+    sub: "Chitkara University",
     color: "hsl(var(--chart-blue))",
   },
 ];
