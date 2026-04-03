@@ -28,8 +28,8 @@ export default function Navbar() {
         transition={{ duration: 0.5 }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 lg:px-24 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
-        <a href="#" className="text-lg font-semibold tracking-tight">
-          <span className="text-gradient font-mono">~/pratham</span>
+        <a href="#" className="text-lg font-bold tracking-tight text-foreground">
+          Pratham Goyal
         </a>
 
         <div className="hidden lg:flex items-center gap-8">
@@ -47,13 +47,24 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <button
             onClick={toggle}
-            className="p-2 rounded-md text-muted-foreground hover:text-primary transition-colors"
             title={isTerminal ? "Switch to styled view" : "View without CSS"}
+            style={{
+              padding: "6px 10px",
+              border: "1px solid currentColor",
+              borderRadius: "6px",
+              fontSize: "11px",
+              fontFamily: "monospace",
+              cursor: "pointer",
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
           >
             {isTerminal ? (
-              <Monitor className="w-4 h-4" />
+              <><Monitor className="w-3.5 h-3.5" /> styled</>
             ) : (
-              <Terminal className="w-4 h-4" />
+              <><Terminal className="w-3.5 h-3.5" /> raw</>
             )}
           </button>
           <a
