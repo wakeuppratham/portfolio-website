@@ -27,7 +27,7 @@ export default function ChessPuzzle() {
   });
 
   const chessRef = useRef(new Chess());
-  const [fen, setFen] = useState("start");
+  const [fen, setFen] = useState<string | null>(null);
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white");
   const [moveIdx, setMoveIdx] = useState(0);
   const [status, setStatus] = useState<Status>("solving");
@@ -152,22 +152,28 @@ export default function ChessPuzzle() {
     <div className="grid md:grid-cols-2 gap-8 items-start">
       {/* Board */}
       <div className="max-w-sm w-full mx-auto md:mx-0">
-        <Chessboard
-          options={{
-            position: fen,
-            boardOrientation: playerColor,
-            animationDurationInMs: 200,
-            allowDragging: status === "solving",
-            boardStyle: {
-              borderRadius: "6px",
-              boxShadow: "0 0 0 1px hsl(220 15% 22%)",
-            },
-            darkSquareStyle: { backgroundColor: "#769656" },
-            lightSquareStyle: { backgroundColor: "#eeeed2" },
-            onPieceDrop: ({ sourceSquare, targetSquare }) =>
-              onPieceDrop(sourceSquare, targetSquare ?? ""),
-          }}
-        />
+        {fen ? (
+          <Chessboard
+            options={{
+              position: fen,
+              boardOrientation: playerColor,
+              animationDurationInMs: 200,
+              allowDragging: status === "solving",
+              boardStyle: {
+                borderRadius: "6px",
+                boxShadow: "0 0 0 1px hsl(220 15% 22%)",
+              },
+              darkSquareStyle: { backgroundColor: "#769656" },
+              lightSquareStyle: { backgroundColor: "#eeeed2" },
+              onPieceDrop: ({ sourceSquare, targetSquare }) =>
+                onPieceDrop(sourceSquare, targetSquare ?? ""),
+            }}
+          />
+        ) : (
+          <div className="aspect-square w-full rounded-md bg-secondary/20 border border-border/30 flex items-center justify-center">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground/30" />
+          </div>
+        )}
       </div>
 
       {/* Info */}
