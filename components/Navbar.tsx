@@ -28,8 +28,8 @@ export default function Navbar() {
         transition={{ duration: 0.5 }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 lg:px-24 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
-        <a href="#" className="text-lg font-bold tracking-tight text-foreground">
-          Pratham Goyal
+        <a href="#" className="font-mono text-sm text-primary tracking-widest hover:opacity-80 transition-opacity">
+          PG
         </a>
 
         <div className="hidden lg:flex items-center gap-8">
