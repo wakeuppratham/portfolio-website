@@ -468,28 +468,32 @@ export default function Playground() {
                           style={{
                             background:
                               r.user === "cooperate" && r.opp === "cooperate"
-                                ? "hsl(var(--terminal-green))"
+                                ? "hsl(142 70% 50%)"
                                 : r.user === "defect" && r.opp === "defect"
-                                ? "hsl(var(--terminal-red))"
+                                ? "hsl(0 72% 55%)"
                                 : r.user === "cooperate"
-                                ? "hsl(var(--terminal-amber))"
-                                : "hsl(var(--primary))",
+                                ? "hsl(43 95% 55%)"
+                                : "hsl(175 70% 50%)",
                           }}
                         />
                       ))}
                     </div>
                     <div className="flex items-center gap-4 mt-3 text-[10px] text-muted-foreground font-mono flex-wrap">
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-sm" style={{ background: "hsl(var(--terminal-green))" }} /> Both cooperate
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: "hsl(142 70% 50%)" }} />
+                        Both cooperate
                       </span>
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-sm" style={{ background: "hsl(var(--terminal-red))" }} /> Both defect
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: "hsl(0 72% 55%)" }} />
+                        Both defect
                       </span>
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-sm" style={{ background: "hsl(var(--terminal-amber))" }} /> You betrayed
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: "hsl(43 95% 55%)" }} />
+                        They betrayed you
                       </span>
-                      <span className="flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-sm" style={{ background: "hsl(var(--primary))" }} /> You won round
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: "hsl(175 70% 50%)" }} />
+                        You betrayed
                       </span>
                     </div>
                   </div>
