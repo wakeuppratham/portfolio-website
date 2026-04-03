@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Play, RotateCcw, Code2, Shield, CheckCircle2, XCircle } from "lucide-react";
-import ChessPuzzle from "@/components/ChessPuzzle";
+import dynamic from "next/dynamic";
+const ChessPuzzle = dynamic(() => import("@/components/ChessPuzzle"), { ssr: false });
 import ReactiveStreams from "@/components/ReactiveStreams";
 
 /* ─── Prisoner's Dilemma ─── */
