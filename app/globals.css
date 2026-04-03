@@ -70,58 +70,80 @@ body {
 }
 
 /* ─── Terminal mode ─── */
+/* ── Minimal / terminal mode ── */
 body.terminal-mode {
-  font-family: 'Times New Roman', serif !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  background: #0d1117 !important;
+  color: #c9d1d9 !important;
 }
 
 body.terminal-mode * {
   font-family: inherit !important;
   background: transparent !important;
   color: inherit !important;
-  border: none !important;
+  border-color: #30363d !important;
   box-shadow: none !important;
-  animation: none !important;
   transition: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border-radius: 0 !important;
+  border-radius: 3px !important;
+}
+
+/* Keep Sisyphus animation alive */
+body.terminal-mode .sisyphus-anim,
+body.terminal-mode .sisyphus-anim * {
+  animation: unset !important;
 }
 
 body.terminal-mode a {
-  color: #0000EE !important;
-  text-decoration: underline !important;
+  color: #58a6ff !important;
+  text-decoration: none !important;
 }
-
-body.terminal-mode a:visited {
-  color: #551A8B !important;
+body.terminal-mode a:hover {
+  text-decoration: underline !important;
 }
 
 body.terminal-mode .terminal-banner {
   display: block !important;
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-  padding: 8px !important;
-  font-family: 'Times New Roman', serif !important;
-  margin-bottom: 16px !important;
+  background: #161b22 !important;
+  color: #8b949e !important;
+  border: 1px solid #30363d !important;
+  padding: 6px 16px !important;
+  font-size: 11px !important;
   text-align: center !important;
-  font-style: italic !important;
+  letter-spacing: 0.05em !important;
 }
 
 body:not(.terminal-mode) .terminal-banner {
   display: none !important;
 }
 
-body.terminal-mode img,
-body.terminal-mode svg {
+/* Hide decorative images/svgs but keep icons in buttons */
+body.terminal-mode img {
   display: none !important;
 }
+body.terminal-mode svg {
+  opacity: 0.6 !important;
+}
 
-body.terminal-mode h1 { font-size: 2em !important; font-weight: bold !important; }
-body.terminal-mode h2 { font-size: 1.5em !important; font-weight: bold !important; }
-body.terminal-mode h3 { font-size: 1.17em !important; font-weight: bold !important; }
+body.terminal-mode h1 { font-size: 1.8em !important; font-weight: bold !important; color: #e6edf3 !important; }
+body.terminal-mode h2 { font-size: 1.3em !important; font-weight: bold !important; color: #e6edf3 !important; }
+body.terminal-mode h3 { font-size: 1.1em !important; font-weight: bold !important; color: #e6edf3 !important; }
+
+/* Section padding tighter */
+body.terminal-mode section { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+
+/* Cards get a subtle border */
+body.terminal-mode [class*="rounded"] {
+  border: 1px solid #21262d !important;
+  padding: 12px !important;
+}
+
+/* Terminal cursor blink stays */
+body.terminal-mode .terminal-cursor {
+  animation: blink 1s step-end infinite !important;
+  color: #58a6ff !important;
+}
 
 /* ─── Custom utilities ─── */
 .text-gradient {

@@ -82,7 +82,7 @@ export default function Contact() {
         >
           <div className="flex flex-col items-center gap-4">
             {/* Sisyphus — rolling boulder up a hill `/`, falls back, repeat */}
-            <div className="relative w-72 h-24">
+            <div className="relative w-72 h-24 sisyphus-anim">
               {/* Hill SVG: line from bottom-left to top-right */}
               <svg
                 viewBox="0 0 288 96"
