@@ -4,6 +4,8 @@ export interface GitHubStats {
   followers: number;
   latestRepo: string;
   latestRepoUrl: string;
+  latestRepoDesc: string;
+  latestCommit: string;
   avatarUrl: string;
 }
 

@@ -40,6 +40,7 @@ type SimResult = {
   opponentScore: number;
   rounds: { user: Move; opp: Move; userPts: number; oppPts: number }[];
   latencyMs: number;
+  oppStrategy: Strategy;
 };
 
 /* ─── Rate Limiter Visualizer (Token Bucket) ─── */
@@ -310,7 +311,8 @@ export default function Playground() {
     setRunning(true);
     setShowJson(false);
     setTimeout(() => {
-      const oppStrategy: Strategy = "always_defect";
+      const oppPool: Strategy[] = ["always_cooperate", "always_defect", "tit_for_tat", "random", "grudger"];
+      const oppStrategy: Strategy = oppPool[Math.floor(Math.random() * oppPool.length)];
       const start = performance.now();
       const userHistory: Move[] = [];
       const oppHistory: Move[] = [];
@@ -334,6 +336,7 @@ export default function Playground() {
         opponentScore: oppTotal,
         rounds,
         latencyMs: Math.round(performance.now() - start),
+        oppStrategy,
       });
       setRunning(false);
     }, 800);
@@ -492,12 +495,11 @@ export default function Playground() {
                   </div>
 
                   <p className="text-xs text-muted-foreground font-mono">
-                    Cooperation rate: {cooperatePercentage}% · Latency: {result.latencyMs}ms ·{" "}
-                    {result.userScore > result.opponentScore
-                      ? "Victory"
-                      : result.userScore === result.opponentScore
-                      ? "Draw"
-                      : "Defeat"}
+                    vs <span className="text-primary">{strategies.find(s => s.id === result.oppStrategy)?.label}</span> ·{" "}
+                    coop {cooperatePercentage}% · {result.latencyMs}ms ·{" "}
+                    <span style={{ color: result.userScore > result.opponentScore ? "hsl(142 70% 55%)" : result.userScore === result.opponentScore ? "inherit" : "hsl(0 72% 65%)" }}>
+                      {result.userScore > result.opponentScore ? "Victory" : result.userScore === result.opponentScore ? "Draw" : "Defeat"}
+                    </span>
                   </p>
 
                   <button
@@ -515,7 +517,7 @@ export default function Playground() {
                           {
                             simulation_id: `sim_${Math.random().toString(36).slice(2, 7)}`,
                             user_strategy: userStrategy,
-                            opponent: "always_defect",
+                            opponent: result.oppStrategy,
                             rounds: 100,
                             final_score: { user: result.userScore, opponent: result.opponentScore },
                             cooperation_rate: `${cooperatePercentage}%`,

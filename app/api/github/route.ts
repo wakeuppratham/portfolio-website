@@ -34,14 +34,28 @@ export async function GET() {
       name: string;
       html_url: string;
       fork: boolean;
+      updated_at: string;
+      description: string | null;
     }>;
 
     const nonForkRepos = repos.filter((r) => !r.fork);
-    const totalStars = nonForkRepos.reduce(
-      (acc, r) => acc + r.stargazers_count,
-      0
-    );
+    const totalStars = nonForkRepos.reduce((acc, r) => acc + r.stargazers_count, 0);
     const latestRepo = nonForkRepos[0];
+
+    // Fetch latest commit message for the most recently updated repo
+    let latestCommit = "";
+    if (latestRepo) {
+      try {
+        const commitRes = await fetch(
+          `https://api.github.com/repos/${username}/${latestRepo.name}/commits?per_page=1`,
+          { headers }
+        );
+        if (commitRes.ok) {
+          const commits = await commitRes.json() as Array<{ commit: { message: string } }>;
+          latestCommit = commits[0]?.commit?.message?.split("\n")[0] ?? "";
+        }
+      } catch { /* ignore */ }
+    }
 
     return NextResponse.json({
       repos: user.public_repos,
@@ -49,6 +63,8 @@ export async function GET() {
       followers: user.followers,
       latestRepo: latestRepo?.name ?? "",
       latestRepoUrl: latestRepo?.html_url ?? "",
+      latestRepoDesc: latestRepo?.description ?? "",
+      latestCommit,
       avatarUrl: user.avatar_url,
     });
   } catch {

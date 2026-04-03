@@ -124,10 +124,10 @@ export default function NowPlaying() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Nothing playing right now
+                    No live music being listened to
                   </p>
                   <p className="font-mono text-xs text-muted-foreground/50 mt-0.5">
-                    open spotify and it&apos;ll show up here
+                    last.fm: offline
                   </p>
                 </div>
               </div>

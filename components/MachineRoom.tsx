@@ -13,6 +13,7 @@ import {
   Loader2,
   Rocket,
   Trophy,
+  ChevronDown,
 } from "lucide-react";
 import type { GitHubStats, LeetCodeStats, VercelDeployment } from "@/types";
 
@@ -54,7 +55,8 @@ function generateLatency() {
 
 /* ─── GitHub Panel ─── */
 function GitHubPanel() {
-  const { data, isLoading, isError } = useQuery<GitHubStats>({
+  const [open, setOpen] = useState(false);
+  const { data, isLoading } = useQuery<GitHubStats>({
     queryKey: ["github"],
     queryFn: () => fetch("/api/github").then((r) => r.json()),
     refetchInterval: 5 * 60 * 1000,
@@ -62,47 +64,74 @@ function GitHubPanel() {
   });
 
   return (
-    <div className="p-5 rounded-lg border border-border/50 bg-card">
+    <div
+      className="p-5 rounded-lg border border-border/50 bg-card cursor-pointer hover:border-primary/30 transition-colors"
+      onClick={() => setOpen((v) => !v)}
+    >
       <div className="flex items-center gap-2 mb-4">
         <GitBranch className="w-4 h-4 text-primary" />
-        <span className="font-mono text-xs text-muted-foreground uppercase">
-          GitHub
-        </span>
+        <span className="font-mono text-xs text-muted-foreground uppercase">GitHub</span>
         {isLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />}
+        {!isLoading && <ChevronDown className={`w-3 h-3 text-muted-foreground ml-auto transition-transform ${open ? "rotate-180" : ""}`} />}
       </div>
-
-      {isError && (
-        <p className="text-xs text-muted-foreground font-mono">Failed to load</p>
-      )}
 
       {isLoading && !data && (
         <div className="space-y-2 animate-pulse">
           <div className="h-8 bg-secondary rounded w-16" />
           <div className="h-3 bg-secondary rounded w-24" />
-          <div className="h-3 bg-secondary rounded w-32" />
         </div>
       )}
 
       {data && (
         <>
-          <div className="flex items-baseline gap-3 mb-3">
+          <div className="flex items-baseline gap-3 mb-1">
             <p className="text-2xl font-bold text-foreground">{data.repos}</p>
             <div className="flex items-center gap-1 text-muted-foreground">
               <Star className="w-3 h-3" />
               <span className="text-xs font-mono">{data.stars} stars</span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mb-1">public repos</p>
+          <p className="text-xs text-muted-foreground mb-2">public repos</p>
           {data.latestRepo && (
             <a
               href={data.latestRepoUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="font-mono text-[10px] text-primary hover:underline truncate block"
             >
               ↳ {data.latestRepo}
             </a>
           )}
+
+          <motion.div
+            initial={false}
+            animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+              <div className="flex justify-between text-[10px] font-mono">
+                <span className="text-muted-foreground">followers</span>
+                <span className="text-foreground">{data.followers}</span>
+              </div>
+              {data.latestCommit && (
+                <div className="text-[10px] font-mono text-muted-foreground">
+                  <span className="text-primary">last commit</span>
+                  <p className="mt-0.5 truncate text-foreground/70">&ldquo;{data.latestCommit}&rdquo;</p>
+                </div>
+              )}
+              <a
+                href="https://github.com/wakeuppratham"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="font-mono text-[10px] text-primary hover:underline block"
+              >
+                view profile →
+              </a>
+            </div>
+          </motion.div>
         </>
       )}
     </div>
@@ -111,7 +140,8 @@ function GitHubPanel() {
 
 /* ─── LeetCode Panel ─── */
 function LeetCodePanel() {
-  const { data, isLoading, isError } = useQuery<LeetCodeStats>({
+  const [open, setOpen] = useState(false);
+  const { data, isLoading } = useQuery<LeetCodeStats>({
     queryKey: ["leetcode"],
     queryFn: () => fetch("/api/leetcode").then((r) => r.json()),
     refetchInterval: 60 * 60 * 1000,
@@ -119,18 +149,16 @@ function LeetCodePanel() {
   });
 
   return (
-    <div className="p-5 rounded-lg border border-border/50 bg-card">
+    <div
+      className="p-5 rounded-lg border border-border/50 bg-card cursor-pointer hover:border-primary/30 transition-colors"
+      onClick={() => setOpen((v) => !v)}
+    >
       <div className="flex items-center gap-2 mb-4">
         <Code2 className="w-4 h-4" style={{ color: "hsl(var(--terminal-amber))" }} />
-        <span className="font-mono text-xs text-muted-foreground uppercase">
-          LeetCode
-        </span>
+        <span className="font-mono text-xs text-muted-foreground uppercase">LeetCode</span>
         {isLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />}
+        {!isLoading && <ChevronDown className={`w-3 h-3 text-muted-foreground ml-auto transition-transform ${open ? "rotate-180" : ""}`} />}
       </div>
-
-      {isError && (
-        <p className="text-xs text-muted-foreground font-mono">Failed to load</p>
-      )}
 
       {isLoading && !data && (
         <div className="space-y-2 animate-pulse">
@@ -141,21 +169,47 @@ function LeetCodePanel() {
 
       {data && (
         <>
-          <p className="text-2xl font-bold text-foreground mb-1">
-            {data.totalSolved}
-          </p>
+          <p className="text-2xl font-bold text-foreground mb-1">{data.totalSolved}</p>
           <p className="text-xs text-muted-foreground mb-3">problems solved</p>
           <div className="flex gap-2 flex-wrap">
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--terminal-green)/0.15)", color: "hsl(var(--terminal-green))" }}>
-              Easy {data.easySolved}
-            </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--terminal-amber)/0.15)", color: "hsl(var(--terminal-amber))" }}>
-              Med {data.mediumSolved}
-            </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--terminal-red)/0.15)", color: "hsl(var(--terminal-red))" }}>
-              Hard {data.hardSolved}
-            </span>
+            {[
+              { label: "Easy", val: data.easySolved, color: "terminal-green" },
+              { label: "Med", val: data.mediumSolved, color: "terminal-amber" },
+              { label: "Hard", val: data.hardSolved, color: "terminal-red" },
+            ].map(({ label, val, color }) => (
+              <span key={label} className="font-mono text-[10px] px-2 py-0.5 rounded-full"
+                style={{ background: `hsl(var(--${color})/0.15)`, color: `hsl(var(--${color}))` }}>
+                {label} {val}
+              </span>
+            ))}
           </div>
+
+          <motion.div
+            initial={false}
+            animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+              <div className="flex justify-between text-[10px] font-mono">
+                <span className="text-muted-foreground">acceptance rate</span>
+                <span className="text-foreground">{data.acceptanceRate?.toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between text-[10px] font-mono">
+                <span className="text-muted-foreground">global rank</span>
+                <span className="text-foreground">#{data.ranking?.toLocaleString()}</span>
+              </div>
+              <a
+                href="https://leetcode.com/prathamg2003"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="font-mono text-[10px] text-primary hover:underline block"
+              >
+                view profile →
+              </a>
+            </div>
+          </motion.div>
         </>
       )}
     </div>
@@ -164,6 +218,7 @@ function LeetCodePanel() {
 
 /* ─── Vercel Panel ─── */
 function VercelPanel() {
+  const [open, setOpen] = useState(false);
   const { data, isLoading, isError } = useQuery<VercelDeployment>({
     queryKey: ["vercel"],
     queryFn: () => fetch("/api/vercel-deploy").then((r) => r.json()),
@@ -185,14 +240,27 @@ function VercelPanel() {
       ? AlertCircle
       : Loader2;
 
+  const deployedAgo = data?.createdAt
+    ? (() => {
+        const diff = Date.now() - data.createdAt;
+        const m = Math.floor(diff / 60000);
+        if (m < 60) return `${m}m ago`;
+        const h = Math.floor(m / 60);
+        if (h < 24) return `${h}h ago`;
+        return `${Math.floor(h / 24)}d ago`;
+      })()
+    : null;
+
   return (
-    <div className="p-5 rounded-lg border border-border/50 bg-card">
+    <div
+      className="p-5 rounded-lg border border-border/50 bg-card cursor-pointer hover:border-primary/30 transition-colors"
+      onClick={() => setOpen((v) => !v)}
+    >
       <div className="flex items-center gap-2 mb-4">
         <Rocket className="w-4 h-4" style={{ color: "hsl(var(--chart-blue))" }} />
-        <span className="font-mono text-xs text-muted-foreground uppercase">
-          Vercel Deploy
-        </span>
+        <span className="font-mono text-xs text-muted-foreground uppercase">Vercel Deploy</span>
         {isLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />}
+        {!isLoading && <ChevronDown className={`w-3 h-3 text-muted-foreground ml-auto transition-transform ${open ? "rotate-180" : ""}`} />}
       </div>
 
       {(isError || (data && "error" in data)) && (
@@ -217,12 +285,34 @@ function VercelPanel() {
               {data.state}
             </span>
           </div>
-          <p className="text-xs text-muted-foreground mb-1 font-mono">{data.name}</p>
-          {data.createdAt && (
-            <p className="text-[10px] text-muted-foreground font-mono">
-              {new Date(data.createdAt).toLocaleString()}
-            </p>
+          <p className="text-xs text-muted-foreground font-mono">{data.name}</p>
+          {deployedAgo && (
+            <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{deployedAgo}</p>
           )}
+
+          <motion.div
+            initial={false}
+            animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+              {data.createdAt && (
+                <div className="text-[10px] font-mono text-muted-foreground">
+                  {new Date(data.createdAt).toLocaleString()}
+                </div>
+              )}
+              <a
+                href={`https://${data.url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="font-mono text-[10px] text-primary hover:underline block truncate"
+              >
+                {data.url} →
+              </a>
+            </div>
+          </motion.div>
         </>
       )}
     </div>
@@ -231,25 +321,38 @@ function VercelPanel() {
 
 /* ─── Achievements Panel ─── */
 function AchievementsPanel() {
+  const [open, setOpen] = useState(false);
   const achievements = [
-    { icon: Trophy, label: "Chess Runner-up", sub: "Rann-Neeti, IIT Mandi", color: "hsl(var(--terminal-amber))" },
-    { icon: Code2, label: "400+ LeetCode", sub: "Problems solved", color: "hsl(var(--primary))" },
-    { icon: Star, label: "CGPA 9.22 / 10", sub: "Chitkara University", color: "hsl(var(--terminal-green))" },
+    { icon: Trophy, label: "Chess Runner-up", sub: "Rann-Neeti, IIT Mandi", color: "hsl(var(--terminal-amber))", detail: "Competed against teams from 20+ colleges across India" },
+    { icon: Code2, label: "400+ LeetCode", sub: "Problems solved", color: "hsl(var(--primary))", detail: "Consistent DSA practice — daily streaks, contests" },
+    { icon: Star, label: "CGPA 9.22 / 10", sub: "Chitkara University", color: "hsl(var(--terminal-green))", detail: "BE Computer Science, graduating 2025" },
   ];
 
   return (
-    <div className="p-5 rounded-lg border border-border/50 bg-card">
+    <div
+      className="p-5 rounded-lg border border-border/50 bg-card cursor-pointer hover:border-primary/30 transition-colors"
+      onClick={() => setOpen((v) => !v)}
+    >
       <div className="flex items-center gap-2 mb-4">
         <Trophy className="w-4 h-4" style={{ color: "hsl(var(--terminal-amber))" }} />
         <span className="font-mono text-xs text-muted-foreground uppercase">Achievements</span>
+        <ChevronDown className={`w-3 h-3 text-muted-foreground ml-auto transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
       <div className="space-y-3">
         {achievements.map((a) => (
-          <div key={a.label} className="flex items-center gap-3">
-            <a.icon className="w-4 h-4 shrink-0" style={{ color: a.color }} />
+          <div key={a.label} className="flex items-start gap-3">
+            <a.icon className="w-4 h-4 shrink-0 mt-0.5" style={{ color: a.color }} />
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{a.label}</p>
               <p className="text-[10px] text-muted-foreground font-mono">{a.sub}</p>
+              <motion.p
+                initial={false}
+                animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden text-[10px] text-muted-foreground/70 mt-0.5"
+              >
+                {a.detail}
+              </motion.p>
             </div>
           </div>
         ))}

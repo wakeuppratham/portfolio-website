@@ -22,7 +22,7 @@ const projects = [
       "Node.js → MongoDB (Message persistence)",
       "Session → JWT (Stateless auth)",
     ],
-    github: "https://github.com/wakeuppratham",
+    github: "https://github.com/wakeuppratham/EchoHub",
   },
   {
     title: "Multithreaded Socket Server",
@@ -30,7 +30,7 @@ const projects = [
     description:
       "A concurrent server application written in Java that handles multiple client connections simultaneously using a dedicated-thread-per-client architecture. Demonstrates core socket programming and multithreading concepts.",
     challenge:
-      "Managing thread lifecycle and preventing resource leaks under concurrent load. Used ExecutorService with a fixed thread pool and graceful shutdown hooks.",
+      "Managing thread lifecycle and preventing resource leaks under concurrent load. Used ExecutorService with a fixed thread pool and per-client request isolation to bound concurrency.",
     tech: ["Java", "Sockets", "Multithreading", "ExecutorService"],
     architecture: [
       "ServerSocket → Accept loop",
@@ -40,7 +40,7 @@ const projects = [
       "InputStream → Message parser",
       "Message parser → Broadcast / Echo",
     ],
-    github: "https://github.com/wakeuppratham",
+    github: "https://github.com/wakeuppratham/Multithreaded-socket",
   },
 ];
 
