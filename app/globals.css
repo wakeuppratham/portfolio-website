@@ -1,26 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-background: hsl(220 20% 7%);
+  --color-foreground: hsl(210 20% 92%);
+
+  --color-card: hsl(220 18% 10%);
+  --color-card-foreground: hsl(210 20% 92%);
+
+  --color-primary: hsl(175 70% 50%);
+  --color-primary-foreground: hsl(220 20% 7%);
+
+  --color-secondary: hsl(220 15% 15%);
+  --color-secondary-foreground: hsl(210 20% 85%);
+
+  --color-muted: hsl(220 15% 13%);
+  --color-muted-foreground: hsl(215 15% 55%);
+
+  --color-accent: hsl(175 70% 50%);
+  --color-accent-foreground: hsl(220 20% 7%);
+
+  --color-destructive: hsl(0 62.8% 50%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+
+  --color-border: hsl(220 15% 18%);
+  --color-input: hsl(220 15% 18%);
+  --color-ring: hsl(175 70% 50%);
+
+  --color-glow: hsl(175 70% 50%);
+  --color-surface: hsl(220 16% 12%);
+  --color-surface-hover: hsl(220 16% 16%);
+
+  --radius: 0.5rem;
+
+  /* Custom tokens — used via CSS var() in components */
+  --terminal-green: hsl(142 70% 55%);
+  --terminal-amber: hsl(38 92% 60%);
+  --terminal-red: hsl(0 72% 55%);
+  --chart-blue: hsl(210 80% 60%);
+  --chart-green: hsl(142 60% 50%);
+  --chart-amber: hsl(38 80% 55%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base styles ─── */
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: hsl(175 70% 50% / 0.25);
+  color: hsl(210 20% 98%);
+}
+
+/* ─── Terminal mode ─── */
+body.terminal-mode {
+  font-family: 'Times New Roman', serif !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.terminal-mode * {
+  font-family: inherit !important;
+  background: transparent !important;
+  color: inherit !important;
+  border: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 0 !important;
+}
+
+body.terminal-mode a {
+  color: #0000EE !important;
+  text-decoration: underline !important;
+}
+
+body.terminal-mode a:visited {
+  color: #551A8B !important;
+}
+
+body.terminal-mode .terminal-banner {
+  display: block !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  padding: 8px !important;
+  font-family: 'Times New Roman', serif !important;
+  margin-bottom: 16px !important;
+  text-align: center !important;
+  font-style: italic !important;
+}
+
+body:not(.terminal-mode) .terminal-banner {
+  display: none !important;
+}
+
+body.terminal-mode img,
+body.terminal-mode svg {
+  display: none !important;
+}
+
+body.terminal-mode h1 { font-size: 2em !important; font-weight: bold !important; }
+body.terminal-mode h2 { font-size: 1.5em !important; font-weight: bold !important; }
+body.terminal-mode h3 { font-size: 1.17em !important; font-weight: bold !important; }
+
+/* ─── Custom utilities ─── */
+.text-gradient {
+  background-image: linear-gradient(135deg, hsl(175 70% 50%), hsl(190 80% 45%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glow-border {
+  box-shadow: 0 0 15px -3px hsl(175 70% 50% / 0.15);
+}
+
+.glow-border-strong {
+  box-shadow: 0 0 30px -5px hsl(175 70% 50% / 0.25);
+}
+
+.section-padding {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.terminal-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.scanline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 50%, hsl(175 70% 50% / 0.03) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
 }
