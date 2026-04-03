@@ -131,7 +131,7 @@ export default function Contact() {
               </motion.div>
             </div>
 
-            <p className="text-xs font-mono italic" style={{ color: "hsl(215 15% 55%)" }}>
+            <p className="text-xs font-mono italic text-muted-foreground">
               &ldquo;One must imagine the backend engineer happy.&rdquo; — Camus (paraphrased)
             </p>
           </div>
