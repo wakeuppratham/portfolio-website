@@ -259,11 +259,16 @@ function AchievementsPanel() {
 }
 
 export default function MachineRoom() {
-  const [latencyData, setLatencyData] = useState(generateLatency);
-  const avgLatency = Math.round(latencyData.reduce((a, b) => a + b, 0) / latencyData.length);
+  const [latencyData, setLatencyData] = useState<number[]>([]);
+  const avgLatency = latencyData.length
+    ? Math.round(latencyData.reduce((a, b) => a + b, 0) / latencyData.length)
+    : 0;
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    // Initialize on client only to avoid hydration mismatch
+    setLatencyData(generateLatency());
+
     timerRef.current = setInterval(() => {
       setLatencyData((prev) => [
         ...prev.slice(1),
