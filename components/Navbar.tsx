@@ -28,8 +28,8 @@ export default function Navbar() {
         transition={{ duration: 0.5 }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 lg:px-24 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
-        <a href="#" className="font-mono text-sm text-primary tracking-widest hover:opacity-80 transition-opacity">
-          PG
+        <a href="#" className="font-mono text-sm text-primary hover:opacity-80 transition-opacity">
+          ~/pratham
         </a>
 
         <div className="hidden lg:flex items-center gap-8">
@@ -62,9 +62,9 @@ export default function Navbar() {
             }}
           >
             {isTerminal ? (
-              <><Monitor className="w-3.5 h-3.5" /> styled</>
+              <><Monitor className="w-3.5 h-3.5" /> visual</>
             ) : (
-              <><Terminal className="w-3.5 h-3.5" /> raw</>
+              <><Terminal className="w-3.5 h-3.5" /> minimal</>
             )}
           </button>
           <a
