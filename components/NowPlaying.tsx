@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Disc3, ExternalLink } from "lucide-react";
+import { Disc3, ExternalLink, EyeOff, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import type { SpotifyNowPlaying } from "@/types";
+
+const STORAGE_KEY = "spotify_visible";
 
 function formatMs(ms: number) {
   const s = Math.floor(ms / 1000);
@@ -11,11 +14,27 @@ function formatMs(ms: number) {
 }
 
 export default function NowPlaying() {
+  const [visible, setVisible] = useState(true);
+
+  // Persist preference in localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved !== null) setVisible(saved === "true");
+  }, []);
+
+  const toggle = () => {
+    setVisible((v) => {
+      localStorage.setItem(STORAGE_KEY, String(!v));
+      return !v;
+    });
+  };
+
   const { data: nowPlaying } = useQuery<SpotifyNowPlaying>({
     queryKey: ["spotify-now-playing"],
     queryFn: () => fetch("/api/spotify/now-playing").then((r) => r.json()),
     refetchInterval: 30 * 1000,
     staleTime: 25 * 1000,
+    enabled: visible,
   });
 
   const progressPct =
@@ -57,18 +76,32 @@ export default function NowPlaying() {
               <Disc3
                 className="w-4 h-4 text-primary"
                 style={{
-                  animation: nowPlaying?.isPlaying
+                  animation: nowPlaying?.isPlaying && visible
                     ? "spin 3s linear infinite"
                     : "none",
                 }}
               />
-              <span className="font-mono text-xs text-primary tracking-wider">
-                {nowPlaying?.isPlaying ? "NOW PLAYING" : "NOT PLAYING"}
+              <span className="font-mono text-xs text-primary tracking-wider flex-1">
+                {!visible ? "SPOTIFY HIDDEN" : nowPlaying?.isPlaying ? "NOW PLAYING" : "NOT PLAYING"}
               </span>
+              <button
+                onClick={toggle}
+                title={visible ? "Hide from visitors" : "Show to visitors"}
+                className="p-1 rounded text-muted-foreground hover:text-primary transition-colors"
+              >
+                {visible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+              </button>
             </div>
 
             {/* Content */}
-            {nowPlaying?.isPlaying ? (
+            {!visible ? (
+              <div className="flex items-center gap-4 px-5 py-6">
+                <EyeOff className="w-5 h-5 text-muted-foreground/30 shrink-0" />
+                <p className="text-sm text-muted-foreground/60 font-mono">
+                  now playing hidden — click <Eye className="w-3 h-3 inline" /> to show
+                </p>
+              </div>
+            ) : nowPlaying?.isPlaying ? (
               <div className="p-5">
                 <div className="flex items-start gap-4 mb-5">
                   {nowPlaying.albumArt && (

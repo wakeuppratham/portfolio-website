@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Trophy, Code2, GraduationCap, Users, BookOpen } from "lucide-react";
+import { Trophy, Code2, GraduationCap, BookOpen } from "lucide-react";
 
 const stats = [
   {
@@ -24,13 +24,6 @@ const stats = [
     label: "CGPA",
     sub: "Chitkara University",
     color: "hsl(var(--terminal-green))",
-  },
-  {
-    icon: Users,
-    value: "Member",
-    label: "University Coding Academy",
-    sub: "Chitkara University",
-    color: "hsl(var(--chart-blue))",
   },
 ];
 
