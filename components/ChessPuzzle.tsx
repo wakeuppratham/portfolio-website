@@ -153,17 +153,20 @@ export default function ChessPuzzle() {
       {/* Board */}
       <div className="max-w-sm w-full mx-auto md:mx-0">
         <Chessboard
-          position={fen}
-          onPieceDrop={onPieceDrop}
-          boardOrientation={playerColor}
-          animationDuration={200}
-          arePiecesDraggable={status === "solving"}
-          customBoardStyle={{
-            borderRadius: "6px",
-            boxShadow: "0 0 0 1px hsl(220 15% 22%)",
+          options={{
+            position: fen,
+            boardOrientation: playerColor,
+            animationDurationInMs: 200,
+            allowDragging: status === "solving",
+            boardStyle: {
+              borderRadius: "6px",
+              boxShadow: "0 0 0 1px hsl(220 15% 22%)",
+            },
+            darkSquareStyle: { backgroundColor: "#769656" },
+            lightSquareStyle: { backgroundColor: "#eeeed2" },
+            onPieceDrop: ({ sourceSquare, targetSquare }) =>
+              onPieceDrop(sourceSquare, targetSquare ?? ""),
           }}
-          customDarkSquareStyle={{ backgroundColor: "#769656" }}
-          customLightSquareStyle={{ backgroundColor: "#eeeed2" }}
         />
       </div>
 
