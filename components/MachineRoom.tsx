@@ -183,7 +183,7 @@ function VercelPanel() {
       ? CheckCircle2
       : data?.state === "ERROR"
       ? AlertCircle
-      : Rocket;
+      : Loader2;
 
   return (
     <div className="p-5 rounded-lg border border-border/50 bg-card">
@@ -195,10 +195,8 @@ function VercelPanel() {
         {isLoading && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />}
       </div>
 
-      {isError && (
-        <p className="text-xs text-muted-foreground font-mono">
-          Not configured — add VERCEL_TOKEN + VERCEL_PROJECT_ID
-        </p>
+      {(isError || (data && "error" in data)) && (
+        <p className="text-xs text-muted-foreground font-mono">unavailable</p>
       )}
 
       {isLoading && !data && (
@@ -211,7 +209,10 @@ function VercelPanel() {
       {data && !("error" in data) && (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <StateIcon className="w-4 h-4" style={{ color: stateColor }} />
+            <StateIcon
+              className={`w-4 h-4 ${data.state !== "READY" && data.state !== "ERROR" ? "animate-spin" : ""}`}
+              style={{ color: stateColor }}
+            />
             <span className="font-mono text-sm font-bold" style={{ color: stateColor }}>
               {data.state}
             </span>

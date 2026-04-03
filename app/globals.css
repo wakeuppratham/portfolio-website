@@ -90,10 +90,13 @@ body.terminal-mode * {
   border-radius: 0 !important;
 }
 
-/* Keep Sisyphus animation alive */
+/* Keep Sisyphus animation + SVG line alive */
 body.terminal-mode .sisyphus-anim,
 body.terminal-mode .sisyphus-anim * {
   animation: unset !important;
+}
+body.terminal-mode .sisyphus-anim svg {
+  display: block !important;
 }
 
 body.terminal-mode a {
