@@ -11,7 +11,6 @@ const roles = [
   "Backend Developer",
   "Systems Thinker",
   "Chess Player",
-  "400+ LeetCode",
 ];
 
 const navMap: Record<string, string> = {
