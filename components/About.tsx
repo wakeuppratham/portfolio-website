@@ -14,7 +14,7 @@ const details = [
   { icon: MapPin, label: "Based in", value: "India" },
   { icon: Briefcase, label: "Currently", value: "Salescode.ai" },
   { icon: GraduationCap, label: "Degree", value: "BE CS — 9.22 CGPA" },
-  { icon: Music, label: "Always", value: "Listening to Music" },
+  { icon: Music, label: "Music", value: "Listening to Music" },
   { icon: Gamepad2, label: "Playing", value: "Chess & Badminton" },
   { icon: Telescope, label: "Exploring", value: "Cosmos & Relativity" },
 ];
