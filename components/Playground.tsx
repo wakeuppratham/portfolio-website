@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Play, RotateCcw, Code2, Shield, CheckCircle2, XCircle } from "lucide-react";
-import dynamic from "next/dynamic";
-const ChessPuzzle = dynamic(() => import("@/components/ChessPuzzle"), { ssr: false });
 import ReactiveStreams from "@/components/ReactiveStreams";
 
 /* ─── Prisoner's Dilemma ─── */
@@ -301,7 +299,7 @@ function RateLimiterVisualizer() {
 }
 
 /* ─── Main Playground ─── */
-type Tab = "dilemma" | "ratelimiter" | "chess" | "reactive";
+type Tab = "dilemma" | "ratelimiter" | "reactive";
 
 export default function Playground() {
   const [activeTab, setActiveTab] = useState<Tab>("dilemma");
@@ -352,7 +350,6 @@ export default function Playground() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "dilemma", label: "Prisoner's Dilemma" },
     { id: "ratelimiter", label: "Rate Limiter" },
-    { id: "chess", label: "Chess Puzzle" },
     { id: "reactive", label: "Reactive Streams" },
   ];
 
@@ -583,16 +580,6 @@ export default function Playground() {
           </motion.div>
         )}
 
-        {/* Chess Puzzle */}
-        {activeTab === "chess" && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ChessPuzzle />
-          </motion.div>
-        )}
       </div>
     </section>
   );
